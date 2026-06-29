@@ -8,12 +8,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useStartups } from "@/hooks/useStartUp";
+import Link from "next/link";
 
 interface Props {
-  onSelect: (startup: any) => void;
+  onSelect?: (startup: any) => void;
+  showViewButton?: boolean;
 }
 
-export default function RecentStartups({ onSelect }: Props) {
+export default function RecentStartups({ onSelect, showViewButton = true }: Props) {
   const { data, isLoading } = useStartups();
 
   if (isLoading) {
@@ -51,9 +53,13 @@ export default function RecentStartups({ onSelect }: Props) {
               </p>
             </div>
 
-            <Button variant="outline" size="icon" onClick={() => onSelect(startup)}>
-              <Eye className="h-4 w-4" />
-            </Button>
+            {showViewButton && (
+              <Link href={`/dashboard/startups/${startup.slug}`}>
+                <Button variant="outline" size="icon">
+                  <Eye className="h-4 w-4" />
+                </Button>
+              </Link>
+            )}
           </div>
         ))}
       </CardContent>
